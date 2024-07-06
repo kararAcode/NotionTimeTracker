@@ -1,8 +1,11 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const TrayGenerator = require('./TrayGenerator');
 
+
+let win;
 function createWindow() {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -10,15 +13,19 @@ function createWindow() {
     },
   });
 
-  win.loadURL('http://localhost:3000'); // React app URL
+  win.loadURL('http://localhost:5173'); // React app URL
 }
 
 app.whenReady().then(() => {
   createWindow();
+  const Tray = new TrayGenerator(win);
+  Tray.createTray();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
+      Tray.createTray();
+
     }
   });
 });
