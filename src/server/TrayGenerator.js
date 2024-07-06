@@ -45,7 +45,7 @@ class TrayGenerator {
 
    
     createTray() {
-        this.tray = new Tray(path.join(__dirname, "../assets/timeIcon3.png"));
+        this.tray = new Tray(path.join(__dirname, "../assets/timeIcon.png"));
         this.tray.setIgnoreDoubleClickEvents(true);
         this.tray.on("click", this.toggleWindow);
     }
