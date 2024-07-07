@@ -3,24 +3,30 @@ const path = require('path');
 const TrayGenerator = require('./TrayGenerator');
 
 
-let win;
 function createWindow() {
   win = new BrowserWindow({
     width: 400,
     height: 100,
     frame: false,
+    resizable: false,
+    show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      // preload: path.join(__dirname, 'preload.js'),
+      
     },
+    
   });
 
   win.loadURL('http://localhost:5173'); // React app URL
+  win.webContents.openDevTools({ mode: 'detach' });
+
 }
 
 app.whenReady().then(() => {
   createWindow();
   const Tray = new TrayGenerator(win);
   Tray.createTray();
+
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

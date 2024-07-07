@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-const Timer = () => {
+const Timer = (props) => {
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
 
@@ -15,9 +15,20 @@ const Timer = () => {
         return () => clearInterval(timer);
     }, [isRunning]);
 
-    const handleStart = () => setIsRunning(true);
-    const handleStop = () => setIsRunning(false);
-    const handleReset = () => setTime(0);
+    const handleStart = () => {
+        if (isRunning) {
+            props.onTimeStopped();
+            setTime(0);
+        }
+
+        setIsRunning(!isRunning);
+
+    };
+    const handlePause = () => setIsRunning(!isRunning);
+    const handleReset = () => {
+        setTime(0);
+        setIsRunning(false);
+    };
 
 
     const formattedTime = () => {
@@ -31,8 +42,8 @@ const Timer = () => {
     return (
         <div>
             <h1>{formattedTime()}</h1>
-            <button onClick={handleStart}>Start</button>
-            <button onClick={handleStop}>Stop</button>
+            <button onClick={handleStart}>{isRunning ? "Stop": "Start"}</button>
+            <button onClick={handlePause}>{isRunning ? "Pause": "Play"}</button>
             <button onClick={handleReset}>Reset</button>
         </div>
     );
