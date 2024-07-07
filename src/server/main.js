@@ -6,8 +6,9 @@ const TrayGenerator = require('./TrayGenerator');
 let win;
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 400,
+    height: 100,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
