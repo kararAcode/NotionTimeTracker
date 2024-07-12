@@ -17,14 +17,20 @@ const Timer = (props) => {
 
     const handleStart = () => {
         if (isRunning) {
-            props.onTimeStopped();
+            props.onTimeStopped(time);
             setTime(0);
         }
 
         setIsRunning(!isRunning);
 
     };
-    const handlePause = () => setIsRunning(!isRunning);
+    const handlePause = () => {
+        if (isRunning) {
+            props.onTimePaused(time);
+        }
+
+        setIsRunning(!isRunning);    
+    };
     const handleReset = () => {
         setTime(0);
         setIsRunning(false);

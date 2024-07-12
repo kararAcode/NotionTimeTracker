@@ -1,7 +1,11 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const TrayGenerator = require('./TrayGenerator');
 
+/** s
+ * @var win: BrowserWindow | null = null;
+ */
+let win;
 
 function createWindow() {
   win = new BrowserWindow({
@@ -11,7 +15,7 @@ function createWindow() {
     resizable: false,
     show: false,
     webPreferences: {
-      // preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.js'),
       
     },
     
@@ -20,13 +24,23 @@ function createWindow() {
   win.loadURL('http://localhost:5173'); // React app URL
   win.webContents.openDevTools({ mode: 'detach' });
 
+
 }
+
+ipcMain.on('time-stopped', (event, arg) => {
+  console.log('Time stopped:', arg);
+});
+
+ipcMain.on('time-paused', (event, arg) => {
+  console.log('Time paused:', arg);
+});
 
 app.whenReady().then(() => {
   createWindow();
   const Tray = new TrayGenerator(win);
   Tray.createTray();
 
+  
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
