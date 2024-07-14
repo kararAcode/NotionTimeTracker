@@ -10,7 +10,7 @@ let win;
 function createWindow() {
   win = new BrowserWindow({
     width: 400,
-    height: 100,
+    height: 200,
     frame: false,
     resizable: false,
     show: false,

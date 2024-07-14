@@ -1,5 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import ControlButton from "./ControlButton";
+import { FontAwesomeIcon, } from '@fortawesome/react-fontawesome'
+import { faPlay, faPause, faStop, faPlayCircle } from '@fortawesome/free-solid-svg-icons'
 
 const Timer = (props) => {
     const [time, setTime] = useState(0);
@@ -46,11 +49,18 @@ const Timer = (props) => {
     };
 
     return (
-        <div>
-            <h1>{formattedTime()}</h1>
-            <button onClick={handleStart}>{isRunning ? "Stop": "Start"}</button>
-            <button onClick={handlePause}>{isRunning ? "Pause": "Play"}</button>
-            <button onClick={handleReset}>Reset</button>
+        <div className="text-center p-5">
+
+            <h1 className="text-4xl font-bold">
+                {formattedTime()}
+            </h1>
+
+            <div>
+                <ControlButton text={isRunning ? "Stop": "Start"} onClick={handleStart} />
+                <ControlButton text={isRunning ? "Pause": "Play"} onClick={handlePause} />     
+                <ControlButton text="Reset" onClick={handleReset} />
+            </div>
+            
         </div>
     );
 
