@@ -1,29 +1,24 @@
-import { useState , useEffect} from 'react'
-
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
 import Timer from './components/Timer';
+import SelectMenu from './components/SelectMenu';
 
 const App = () => {
   
-
   const timeStoppedHandler = (time) => {
-
-    // eventually will send msg to server the time to upload to notion
-    window.electron.sendMessage("time-stopped", {time})
+    window.electron.sendMessage("time-stopped", {time});
     console.log('Time stopped');
   };
 
-
   const timePauseHandler = (time) => {
-
-    // eventually will send msg to server the time to upload to notion
-    window.electron.sendMessage("time-paused", {time})
+    window.electron.sendMessage("time-paused", {time});
     console.log('Time paused');
   };
 
   return (
-    <div className="App">
-      <Timer onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler}/>
+    <div className="App text-center p-5">
+      <Timer onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler} />
+      <SelectMenu />
     </div>
   );
 };

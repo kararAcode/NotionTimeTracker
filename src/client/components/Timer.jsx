@@ -1,8 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ControlButton from "./ControlButton";
-import { FontAwesomeIcon, } from '@fortawesome/react-fontawesome'
-import { faPlay, faPause, faStop, faPlayCircle } from '@fortawesome/free-solid-svg-icons'
+import SelectMenu from './SelectMenu';
 
 const Timer = (props) => {
     const [time, setTime] = useState(0);
@@ -23,47 +21,40 @@ const Timer = (props) => {
             props.onTimeStopped(time);
             setTime(0);
         }
-
         setIsRunning(!isRunning);
-
     };
+
     const handlePause = () => {
         if (isRunning) {
             props.onTimePaused(time);
         }
-
         setIsRunning(!isRunning);    
     };
+
     const handleReset = () => {
         setTime(0);
         setIsRunning(false);
     };
 
-
     const formattedTime = () => {
         const hours = Math.floor(time / 3600);
         const minutes = Math.floor((time % 3600) / 60);
         const seconds = time % 60;
-
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
     return (
-        <div className="text-center p-5">
-
+        <div className="flex flex-col items-center space-y-4 w-full max-w-md">
             <h1 className="text-4xl font-bold">
                 {formattedTime()}
             </h1>
-
-            <div>
+            <div className="flex space-x-4">
                 <ControlButton text={isRunning ? "Stop": "Start"} onClick={handleStart} />
                 <ControlButton text={isRunning ? "Pause": "Play"} onClick={handlePause} />     
                 <ControlButton text="Reset" onClick={handleReset} />
             </div>
-            
         </div>
     );
-
 }
 
 export default Timer;
