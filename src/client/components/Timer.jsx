@@ -44,7 +44,7 @@ const Timer = (props) => {
     };
 
     return (
-        <div className="flex flex-col items-center space-y-4 w-full max-w-md">
+        <div className="flex flex-col items-center space-y-4 w-full max-w-md mt-4">
             <h1 className="text-4xl font-bold">
                 {formattedTime()}
             </h1>
@@ -53,6 +53,7 @@ const Timer = (props) => {
                 <ControlButton text={isRunning ? "Pause": "Play"} onClick={handlePause} />     
                 <ControlButton text="Reset" onClick={handleReset} />
             </div>
+            <SelectMenu />
         </div>
     );
 }

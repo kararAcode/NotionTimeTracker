@@ -16,9 +16,8 @@ const App = () => {
   };
 
   return (
-    <div className="App text-center p-5">
+    <div className="App">
       <Timer onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler} />
-      <SelectMenu />
     </div>
   );
 };
