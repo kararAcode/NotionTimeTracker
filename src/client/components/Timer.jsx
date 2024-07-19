@@ -43,6 +43,7 @@ const Timer = (props) => {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
+
     return (
         <div className="flex flex-col items-center space-y-4 w-full max-w-md mt-4">
             <h1 className="text-4xl font-bold">
@@ -53,7 +54,7 @@ const Timer = (props) => {
                 <ControlButton text={isRunning ? "Pause": "Play"} onClick={handlePause} />     
                 <ControlButton text="Reset" onClick={handleReset} />
             </div>
-            <SelectMenu />
+            <SelectMenu tasks={props.tasks}/>
         </div>
     );
 }

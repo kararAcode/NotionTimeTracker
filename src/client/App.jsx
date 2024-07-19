@@ -1,9 +1,20 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import Timer from './components/Timer';
-import SelectMenu from './components/SelectMenu';
 
 const App = () => {
+
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+     window.electron.sendMessage("fetch-tasks");
+     
+     window.electron.onMessage("fetch-tasks-reply", (event) => {
+      setTasks(event.tasks);
+      setLoading(false);
+     });
+  }, []);
   
   const timeStoppedHandler = (time) => {
     window.electron.sendMessage("time-stopped", {time});
@@ -15,9 +26,11 @@ const App = () => {
     console.log('Time paused');
   };
 
+  if (loading) return <div>Loading...</div>
+
   return (
     <div className="App">
-      <Timer onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler} />
+      <Timer tasks={tasks} onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler} />
     </div>
   );
 };
