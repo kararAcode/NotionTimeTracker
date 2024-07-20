@@ -4,37 +4,42 @@ import SelectMenu from './SelectMenu';
 
 const Timer = (props) => {
     const [time, setTime] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
+    const [isStarted, setIsStarted] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
 
     useEffect(() => {
         let timer;
-        if (isRunning) {
+        if (isStarted &&!isPaused) {
             timer = setInterval(() => setTime(prevTime => prevTime + 1), 1000);
         } else {
             clearInterval(timer);
         }
         return () => clearInterval(timer);
-    }, [isRunning]);
+    }, [isStarted, isPaused]);
 
-    const handleStart = () => {
-        if (isRunning) {
-            props.onTimeStopped(time);
+    const handleStartStop = () => {
+        if (isStarted) {
             setTime(0);
+            props.onTimeStopped(time);
         }
-        setIsRunning(!isRunning);
+        setIsStarted(!isStarted);
+        
     };
 
-    const handlePause = () => {
-        if (isRunning) {
+    const handlePausePlay = () => {
+        if (!isPaused) {
             props.onTimePaused(time);
         }
-        setIsRunning(!isRunning);    
+
+        setIsPaused(!isPaused);
     };
 
     const handleReset = () => {
+        setIsStarted(false);
+        setIsPaused(false);
         setTime(0);
-        setIsRunning(false);
     };
+    
 
     const formattedTime = () => {
         const hours = Math.floor(time / 3600);
@@ -50,11 +55,11 @@ const Timer = (props) => {
                 {formattedTime()}
             </h1>
             <div className="flex space-x-4">
-                <ControlButton text={isRunning ? "Stop": "Start"} onClick={handleStart} />
-                <ControlButton text={isRunning ? "Pause": "Play"} onClick={handlePause} />     
-                <ControlButton text="Reset" onClick={handleReset} />
+                <ControlButton text={isStarted ? "Stop": "Start"} onClick={handleStartStop} />
+                <ControlButton disabled={!isStarted} text={isPaused ? "Play": "Pause"} onClick={handlePausePlay} />     
+                <ControlButton disabled={!isStarted} text="Reset" onClick={handleReset} />
             </div>
-            <SelectMenu tasks={props.tasks}/>
+            <SelectMenu disabled={isStarted} tasks={props.tasks}/>
         </div>
     );
 }
