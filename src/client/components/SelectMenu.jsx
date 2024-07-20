@@ -1,22 +1,34 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
-
-  
 export default function SelectMenu(props) {
-  const [selected, setSelected] = useState(props.tasks[3])
+  const [selected, setSelected] = useState(props.selectedTask);
+
+ 
+
+  const handleSelect = (task) => {
+    setSelected(task);
+    props.onTaskSelected(task);
+  }
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
-      {/* <Label className="block text-sm font-medium leading-6 text-gray-900">Assigned to</Label> */}
+    <Listbox value={selected} onChange={handleSelect}>
       <div className="relative mt-2 w-[66%]">
-        <ListboxButton disabled={props.disabled} className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 disabled:cursor-not-allowed">
+        <ListboxButton 
+          disabled={props.disabled} 
+          className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 disabled:cursor-not-allowed"
+        >
           <span className="flex items-center">
-            <img alt="" src={selected.icon} className="h-5 w-5 flex-shrink-0 rounded-full" />
-            <span className="ml-3 block truncate">{selected.name}</span>
+            {selected && (
+              <>
+                <img alt="" src={selected.icon} className="h-5 w-5 flex-shrink-0 rounded-full" />
+                <span className="ml-3 block truncate">{selected.name}</span>
+              </>
+            )}
+            {!selected && <span className="ml-3 block truncate">Select a task</span>}
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
             <ChevronUpDownIcon aria-hidden="true" className="h-5 w-5 text-gray-400" />

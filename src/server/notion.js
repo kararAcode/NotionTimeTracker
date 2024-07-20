@@ -16,7 +16,8 @@ async function listAllItemsInDatabase(databaseId) {
       .map(item => {
         const name = item.properties["Task name"]?.title[0]?.text?.content || "Untitled";
         const icon = item.icon?.type === 'emoji' ? item.icon.emoji : item.icon?.external?.url;
-        return { name, icon, id: item.id, status: item.properties.Status?.status?.id };
+        const time = item.properties["Time"].number || 0;
+        return { name, icon, id: item.id, status: item.properties.Status?.status?.id, time };
       });
       
     return items;
@@ -26,8 +27,20 @@ async function listAllItemsInDatabase(databaseId) {
   }
 }
 
+async function setTaskTime(taskid, time) {
+
+
+  const response = await notion.pages.update({
+    page_id: taskid, 
+    properties: {
+      "Time": {
+        number: time
+      }
+    }
+  });
+}
 
 
 module.exports = {
-  listAllItemsInDatabase
+  listAllItemsInDatabase, setTaskTime
 };

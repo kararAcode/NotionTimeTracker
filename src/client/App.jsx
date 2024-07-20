@@ -16,13 +16,13 @@ const App = () => {
      });
   }, []);
   
-  const timeStoppedHandler = (time) => {
-    window.electron.sendMessage("time-stopped", {time});
+  const timeStoppedHandler = (data) => {
+    window.electron.sendMessage("time-stopped", data);
     console.log('Time stopped');
   };
 
-  const timePauseHandler = (time) => {
-    window.electron.sendMessage("time-paused", {time});
+  const timePauseHandler = (data) => {
+    window.electron.sendMessage("time-paused", data);
     console.log('Time paused');
   };
 

@@ -34,13 +34,15 @@ app.whenReady().then(() => {
   Tray.createTray();
 
   ipcMain.on('time-stopped', (event, arg) => {
-    console.log('Time stopped:', arg);
+    notion.setTaskTime(arg.task.id, arg.time);
+
   });
   
   ipcMain.on('time-paused', (event, arg) => {
-    console.log('Time paused:', arg);
+    notion.setTaskTime(arg.task.id, arg.time);
   });
-  
+
+
   ipcMain.on('fetch-tasks', async (event, arg) => {
     console.log("Fetch Tasks"); 
     const tasks = await notion.listAllItemsInDatabase(process.env.NOTION_DATABASE_ID);

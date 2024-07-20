@@ -7,6 +7,7 @@ const Timer = (props) => {
     const [isStarted, setIsStarted] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
 
+    const [selectedTask, setSelectedTask] = useState(null);
     useEffect(() => {
         let timer;
         if (isStarted &&!isPaused) {
@@ -20,7 +21,7 @@ const Timer = (props) => {
     const handleStartStop = () => {
         if (isStarted) {
             setTime(0);
-            props.onTimeStopped(time);
+            props.onTimeStopped({ time, task: selectedTask  });
         }
         setIsStarted(!isStarted);
         
@@ -28,7 +29,7 @@ const Timer = (props) => {
 
     const handlePausePlay = () => {
         if (!isPaused) {
-            props.onTimePaused(time);
+            props.onTimePaused({ time, task: selectedTask  });
         }
 
         setIsPaused(!isPaused);
@@ -38,6 +39,12 @@ const Timer = (props) => {
         setIsStarted(false);
         setIsPaused(false);
         setTime(0);
+    };
+
+    const handleTaskSelected = (task) => {
+
+        setTime(task.time);
+        setSelectedTask(task)
     };
     
 
@@ -55,11 +62,11 @@ const Timer = (props) => {
                 {formattedTime()}
             </h1>
             <div className="flex space-x-4">
-                <ControlButton text={isStarted ? "Stop": "Start"} onClick={handleStartStop} />
+                <ControlButton disabled={!selectedTask} text={isStarted ? "Stop": "Start"} onClick={handleStartStop} />
                 <ControlButton disabled={!isStarted} text={isPaused ? "Play": "Pause"} onClick={handlePausePlay} />     
                 <ControlButton disabled={!isStarted} text="Reset" onClick={handleReset} />
             </div>
-            <SelectMenu disabled={isStarted} tasks={props.tasks}/>
+            <SelectMenu onTaskSelected={handleTaskSelected} disabled={isStarted} selectedTask={selectedTask} tasks={props.tasks}/>
         </div>
     );
 }
