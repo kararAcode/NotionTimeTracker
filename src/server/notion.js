@@ -3,7 +3,6 @@ require('dotenv').config();
 
 // Initialize the Notion client with your integration token
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
-console.log(process.env.NOTION_TOKEN);
 
 // Function to retrieve and list all items in a specific database by ID
 async function listAllItemsInDatabase(databaseId) {
@@ -27,10 +26,7 @@ async function listAllItemsInDatabase(databaseId) {
   }
 }
 
-// Example usage
-listAllItemsInDatabase(process.env.NOTION_DATABASE_ID).then(items => {
-  console.log(items);
-});
+
 
 module.exports = {
   listAllItemsInDatabase

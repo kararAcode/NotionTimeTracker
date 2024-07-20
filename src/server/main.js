@@ -28,10 +28,6 @@ function createWindow() {
 
 }
 
-
-
-
-
 app.whenReady().then(() => {
   createWindow();
   const Tray = new TrayGenerator(win);

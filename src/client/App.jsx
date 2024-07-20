@@ -29,7 +29,7 @@ const App = () => {
   if (loading) return <div>Loading...</div>
 
   return (
-    <div className="App">
+    <div className="App flex justify-center">
       <Timer tasks={tasks} onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler} />
     </div>
   );
