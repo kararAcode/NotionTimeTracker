@@ -15,22 +15,16 @@ const App = () => {
       setLoading(false);
      });
   }, []);
-  
-  const timeStoppedHandler = (data) => {
-    window.electron.sendMessage("time-stopped", data);
-    console.log('Time stopped');
-  };
 
-  const timePauseHandler = (data) => {
-    window.electron.sendMessage("time-paused", data);
-    console.log('Time paused');
-  };
-
+  const handleTaskUpload = (task) => {
+    window.electron.sendMessage("upload-task", { task });
+  }
+ 
   if (loading) return <div>Loading...</div>
 
   return (
     <div className="App flex justify-center">
-      <Timer tasks={tasks} onTimeStopped={timeStoppedHandler} onTimePaused={timePauseHandler} />
+      <Timer tasks={tasks} onTaskUpload={handleTaskUpload}/>
     </div>
   );
 };

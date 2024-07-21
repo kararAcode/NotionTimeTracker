@@ -4,47 +4,43 @@ import SelectMenu from './SelectMenu';
 
 const Timer = (props) => {
     const [time, setTime] = useState(0);
-    const [isStarted, setIsStarted] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-
+    const [isRunning, setIsRunning] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
+
     useEffect(() => {
         let timer;
-        if (isStarted &&!isPaused) {
+        if (isRunning) {
             timer = setInterval(() => setTime(prevTime => prevTime + 1), 1000);
         } else {
             clearInterval(timer);
         }
         return () => clearInterval(timer);
-    }, [isStarted, isPaused]);
+    }, [isRunning]);
 
-    const handleStartStop = () => {
-        if (isStarted) {
-            setTime(0);
-            props.onTimeStopped({ time, task: selectedTask  });
-        }
-        setIsStarted(!isStarted);
-        
-    };
+   
 
-    const handlePausePlay = () => {
-        if (!isPaused) {
-            props.onTimePaused({ time, task: selectedTask  });
-        }
-
-        setIsPaused(!isPaused);
+    const handleTaskSelected = (task) => {
+        setTime(task.time);
+        setSelectedTask(task)
     };
 
     const handleReset = () => {
-        setIsStarted(false);
-        setIsPaused(false);
+        setIsRunning(false);
         setTime(0);
     };
 
-    const handleTaskSelected = (task) => {
+    const handlePlayBack = () => {
+        setIsRunning(!isRunning);
+    }
 
-        setTime(task.time);
-        setSelectedTask(task)
+    const handleUpload = () => {
+      setSelectedTask((prevTask) => {
+        const updatedTask = {...prevTask, time };
+
+        props.onTaskUpload(updatedTask);
+
+        return updatedTask;
+      })
     };
     
 
@@ -62,11 +58,11 @@ const Timer = (props) => {
                 {formattedTime()}
             </h1>
             <div className="flex space-x-4">
-                <ControlButton disabled={!selectedTask} text={isStarted ? "Stop": "Start"} onClick={handleStartStop} />
-                <ControlButton disabled={!isStarted} text={isPaused ? "Play": "Pause"} onClick={handlePausePlay} />     
-                <ControlButton disabled={!isStarted} text="Reset" onClick={handleReset} />
+                <ControlButton disabled={!selectedTask || isRunning} text="Upload" onClick={handleUpload} />
+                <ControlButton disabled={!selectedTask} text={isRunning ? "Pause": "Play"} onClick={handlePlayBack} />     
+                <ControlButton disabled={!selectedTask} text="Reset" onClick={handleReset} />
             </div>
-            <SelectMenu onTaskSelected={handleTaskSelected} disabled={isStarted} selectedTask={selectedTask} tasks={props.tasks}/>
+            <SelectMenu onTaskSelected={handleTaskSelected} disabled={isRunning} selectedTask={selectedTask} tasks={props.tasks}/>
         </div>
     );
 }

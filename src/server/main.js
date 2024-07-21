@@ -3,7 +3,7 @@ const path = require('path');
 const TrayGenerator = require('./TrayGenerator');
 const notion = require('./notion');
 
-/** s
+/** 
  * @var win: BrowserWindow | null = null;
  */
 let win;
@@ -33,20 +33,15 @@ app.whenReady().then(() => {
   const Tray = new TrayGenerator(win);
   Tray.createTray();
 
-  ipcMain.on('time-stopped', (event, arg) => {
-    notion.setTaskTime(arg.task.id, arg.time);
-
-  });
   
-  ipcMain.on('time-paused', (event, arg) => {
-    notion.setTaskTime(arg.task.id, arg.time);
-  });
-
 
   ipcMain.on('fetch-tasks', async (event, arg) => {
-    console.log("Fetch Tasks"); 
     const tasks = await notion.listAllItemsInDatabase(process.env.NOTION_DATABASE_ID);
     event.sender.send('fetch-tasks-reply', { tasks });
+  });
+
+  ipcMain.on('upload-task', async (event, { task }) => {
+    await notion.setTaskTime(task.id, task.time);
   });
   
 
