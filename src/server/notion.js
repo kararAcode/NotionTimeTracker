@@ -4,7 +4,12 @@ require('dotenv').config();
 // Initialize the Notion client with your integration token
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-// Function to retrieve and list all items in a specific database by ID
+/**
+ * Retrieves and lists all items in a specific Notion database by ID, excluding tasks with 'done' or 'archived' status.
+ *
+ * @param {string} databaseId - The ID of the Notion database to query.
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of items, each containing the task name, icon, id, status, and time.
+ */
 async function listAllItemsInDatabase(databaseId) {
   try {
     const response = await notion.databases.query({
@@ -27,9 +32,15 @@ async function listAllItemsInDatabase(databaseId) {
   }
 }
 
+
+/**
+ * Updates the time property of a specific task in Notion.
+ *
+ * @param {string} taskid - The ID of the task to update.
+ * @param {number} time - The new time value to set for the task.
+ * @returns {Promise<Object>} A promise that resolves to the response object from the Notion API.
+ */
 async function setTaskTime(taskid, time) {
-
-
   const response = await notion.pages.update({
     page_id: taskid, 
     properties: {
@@ -38,9 +49,9 @@ async function setTaskTime(taskid, time) {
       }
     }
   });
+
+  return response;
 }
-
-
 module.exports = {
   listAllItemsInDatabase, setTaskTime
 };
