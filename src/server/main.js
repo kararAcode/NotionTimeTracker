@@ -2,11 +2,14 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const TrayGenerator = require('./TrayGenerator');
 const notion = require('./notion');
+const AutoUpdater = require('./autoUpdater');
 
 /** 
  * @var win: BrowserWindow | null = null;
  */
 let win;
+let updater;
+
 
 function createWindow() {
   win = new BrowserWindow({
@@ -25,7 +28,9 @@ function createWindow() {
   win.loadURL('http://localhost:5173'); // React app URL
   win.webContents.openDevTools({ mode: 'detach' });
 
-
+  updater = new AutoUpdater(win);
+  updater.checkForUpdates();
+  
 }
 
 app.whenReady().then(() => {

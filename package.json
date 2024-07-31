@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "main": "src/server/main.js",
+  "author": "kararacode",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "client": "vite",
@@ -23,6 +24,8 @@
     "dotenv": "^16.4.5",
     "electron": "^12.0.0",
     "electron-builder": "^24.13.3",
+    "electron-log": "^5.1.7",
+    "electron-updater": "^6.2.1",
     "postcss": "^8.4.39",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
